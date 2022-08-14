@@ -65,7 +65,7 @@
                                     									
                                     <listOptionValue builtIn="false" value="/opt/Boost_important_1_78/include"/>
                                     									
-                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/src/Core}&quot;"/>
+                                    <listOptionValue builtIn="false" value="&quot;${workspace_loc:/${ProjName}/include/Core}&quot;"/>
                                     								
                                 </option>
                                 								
