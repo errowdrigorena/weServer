@@ -17,6 +17,8 @@
 #include <boost/config.hpp>
 #include <boost/property_tree/json_parser.hpp>
 
+#include <CRUD/Receive.h>
+
 #include <string>
 #include <iostream>
 #include <tuple>
@@ -101,9 +103,9 @@ handle_request(
     };
 
     // Make sure we can handle the method
-    if( req.method() != http::verb::get &&
-        req.method() != http::verb::head)
-        return send(bad_request("Unknown HTTP-method"));
+    /*if( req.method() != http::verb::get &&
+        req.method() != http::verb::head )
+        return send(bad_request("Unknown HTTP-method"));*/
 
     // Request path must be absolute and not contain "..".
     if( req.target().empty() ||
@@ -112,35 +114,11 @@ handle_request(
         return send(bad_request("Illegal request-target"));
 
     // nuestro codigo aquí
-    if(req.target() == "/API")
-    {
-    	std::cout << "We ara in API" << std::endl;
+	if( manage_reception(std::move(req), send) )
+	{
+		return;
+	}
 
-    	if(req.method() == http::verb::get)
-    	{
-
-			boost::property_tree::ptree root;
-			boost::property_tree::ptree arrayTree;
-			boost::property_tree::ptree flatTree;
-			std::stringstream ss;
-
-			// Populate JSON response
-			flatTree.put("bool", true);
-			flatTree.put("integer", 123);
-			flatTree.put("string", "String");
-			arrayTree.push_back(std::make_pair("", flatTree));
-			arrayTree.push_back(std::make_pair("", flatTree));
-			arrayTree.push_back(std::make_pair("", flatTree));
-			root.add_child("node_array", arrayTree);
-			root.add_child("node_1", flatTree);
-
-			// Export JSON response
-			boost::property_tree::json_parser::write_json(ss, root, true /* human */);
-            http::response<http::string_body> res{http::status::ok, req.version(), ss.str()};
-	        return send(std::move(res));
-
-    	}
-    }
     //*********************************
 
     // Build the path to the requested file

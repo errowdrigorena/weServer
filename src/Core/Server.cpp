@@ -29,10 +29,10 @@ void run_server()
 	{ web_server::address, web_server::port }, web_server::doc_root)->run();
 
 	// Run the I/O service on the requested number of threads
-	std::vector<std::thread> v;
-	v.reserve(web_server::threads - 1);
+	std::vector<std::thread> thread_container;
+	thread_container.reserve(web_server::threads - 1);
 	for (auto i = web_server::threads - 1; i > 0; --i)
-		v.emplace_back([&ioc]
+		thread_container.emplace_back([&ioc]
 		{
 			ioc.run();
 		});
