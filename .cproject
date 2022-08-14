@@ -45,13 +45,13 @@
                                 								
                                 <option defaultValue="gnu.c.debugging.level.max" id="gnu.c.compiler.option.debugging.level.1235258984" name="Debug Level" superClass="gnu.c.compiler.option.debugging.level" useByScannerDiscovery="false" valueType="enumerated"/>
                                 								
-                                <option id="gnu.c.compiler.option.dialect.std.583320760" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
+                                <option id="gnu.c.compiler.option.dialect.std.583320760" name="Language standard" superClass="gnu.c.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.c.compiler.dialect.default" valueType="enumerated"/>
                                 								
                                 <inputType id="cdt.managedbuild.tool.gnu.c.compiler.input.966089771" superClass="cdt.managedbuild.tool.gnu.c.compiler.input"/>
                                 							
                             </tool>
                             							
-                            <tool id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.2126007621" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
+                            <tool command="g++-11" id="cdt.managedbuild.tool.gnu.cross.cpp.compiler.2126007621" name="Cross G++ Compiler" superClass="cdt.managedbuild.tool.gnu.cross.cpp.compiler">
                                 								
                                 <option id="gnu.cpp.compiler.option.optimization.level.602538317" name="Optimization Level" superClass="gnu.cpp.compiler.option.optimization.level" useByScannerDiscovery="false" value="gnu.cpp.compiler.optimization.level.none" valueType="enumerated"/>
                                 								
@@ -59,7 +59,7 @@
                                 								
                                 <option id="gnu.cpp.compiler.option.dialect.std.1159095074" name="Language standard" superClass="gnu.cpp.compiler.option.dialect.std" useByScannerDiscovery="true" value="gnu.cpp.compiler.dialect.default" valueType="enumerated"/>
                                 								
-                                <option id="gnu.cpp.compiler.option.dialect.flags.884282556" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="-std=c++17" valueType="string"/>
+                                <option id="gnu.cpp.compiler.option.dialect.flags.884282556" name="Other dialect flags" superClass="gnu.cpp.compiler.option.dialect.flags" useByScannerDiscovery="true" value="-std=c++20" valueType="string"/>
                                 								
                                 <option IS_BUILTIN_EMPTY="false" IS_VALUE_EMPTY="false" id="gnu.cpp.compiler.option.include.paths.1983215314" name="Include paths (-I)" superClass="gnu.cpp.compiler.option.include.paths" useByScannerDiscovery="false" valueType="includePath">
                                     									

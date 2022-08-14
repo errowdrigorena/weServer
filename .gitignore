@@ -33,3 +33,4 @@
 
 #certificates
 *.pem
+/Debug/
