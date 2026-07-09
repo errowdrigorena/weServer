@@ -1,1 +1,1 @@
-# Library modules are wired in as they are introduced.
+add_subdirectory(store)
