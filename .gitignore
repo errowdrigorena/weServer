@@ -33,4 +33,6 @@
 
 #certificates
 *.pem
+/build/
 /Debug/
+CMakeUserPresets.json
