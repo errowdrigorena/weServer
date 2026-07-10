@@ -12,14 +12,12 @@ enum class ItemErrc {
 };
 
 class ItemErrorCategory final : public boost::system::error_category {
-public:
-    [[nodiscard]] char const* name() const noexcept override
-    {
+  public:
+    [[nodiscard]] char const *name() const noexcept override {
         return "item";
     }
 
-    [[nodiscard]] std::string message(int ev) const override
-    {
+    [[nodiscard]] std::string message(int ev) const override {
         switch (static_cast<ItemErrc>(ev)) {
         case ItemErrc::invalid_json:
             return "invalid JSON body";
@@ -31,21 +29,18 @@ public:
     }
 };
 
-[[nodiscard]] ItemErrorCategory const& item_error_category()
-{
+[[nodiscard]] ItemErrorCategory const &item_error_category() {
     static ItemErrorCategory const instance;
     return instance;
 }
 
-[[nodiscard]] boost::system::error_code make_item_error(ItemErrc err)
-{
+[[nodiscard]] boost::system::error_code make_item_error(ItemErrc err) {
     return {static_cast<int>(err), item_error_category()};
 }
 
-}  // namespace
+} // namespace
 
-boost::json::object Item::to_json() const
-{
+boost::json::object Item::to_json() const {
     return {
         {"id", id},
         {"name", name},
@@ -53,8 +48,7 @@ boost::json::object Item::to_json() const
     };
 }
 
-boost::system::result<Item> item_from_json(std::string_view body)
-{
+boost::system::result<Item> item_from_json(std::string_view body) {
     boost::system::error_code ec;
     auto value = boost::json::parse(body, ec);
     if (ec) {
@@ -65,7 +59,7 @@ boost::system::result<Item> item_from_json(std::string_view body)
         return make_item_error(ItemErrc::invalid_json);
     }
 
-    auto const& obj = value.as_object();
+    auto const &obj = value.as_object();
     auto const name_it = obj.find("name");
     if (name_it == obj.end() || !name_it->value().is_string()) {
         return make_item_error(ItemErrc::missing_field);
@@ -84,4 +78,4 @@ boost::system::result<Item> item_from_json(std::string_view body)
     return item;
 }
 
-}  // namespace web_server
+} // namespace web_server

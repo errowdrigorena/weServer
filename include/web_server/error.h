@@ -6,10 +6,6 @@
 
 namespace web_server {
 
-void log_error(
-    boost::system::error_code ec,
-    std::string_view what,
-    std::string_view detail = {});
+void log_error(boost::system::error_code ec, std::string_view what, std::string_view detail = {});
 
-}  // namespace web_server
-
+} // namespace web_server

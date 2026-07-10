@@ -6,11 +6,7 @@
 
 namespace web_server {
 
-void log_error(
-    boost::system::error_code ec,
-    std::string_view what,
-    std::string_view detail)
-{
+void log_error(boost::system::error_code ec, std::string_view what, std::string_view detail) {
     if (ec == boost::asio::ssl::error::stream_truncated) {
         return;
     }
@@ -22,4 +18,4 @@ void log_error(
     std::cerr << '\n';
 }
 
-}  // namespace web_server
+} // namespace web_server

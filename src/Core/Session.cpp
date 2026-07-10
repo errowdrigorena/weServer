@@ -7,6 +7,4 @@
 
 #include <Session.h>
 
-namespace web_server {
-
-} /* namespace web_server */
+namespace web_server {} /* namespace web_server */

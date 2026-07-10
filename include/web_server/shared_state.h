@@ -10,5 +10,4 @@ struct SharedState {
     MemoryStore store;
 };
 
-}  // namespace web_server
-
+} // namespace web_server

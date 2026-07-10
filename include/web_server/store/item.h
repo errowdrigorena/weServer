@@ -19,4 +19,4 @@ struct Item {
 
 [[nodiscard]] boost::system::result<Item> item_from_json(std::string_view body);
 
-}  // namespace web_server
+} // namespace web_server

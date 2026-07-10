@@ -5,8 +5,7 @@
 namespace web_server {
 namespace {
 
-TEST(MemoryStoreTest, CreateAndList)
-{
+TEST(MemoryStoreTest, CreateAndList) {
     MemoryStore store;
     Item item;
     item.name = "alpha";
@@ -21,8 +20,7 @@ TEST(MemoryStoreTest, CreateAndList)
     EXPECT_EQ(items.front().id, 1);
 }
 
-TEST(MemoryStoreTest, GetUpdateDelete)
-{
+TEST(MemoryStoreTest, GetUpdateDelete) {
     MemoryStore store;
     Item item;
     item.name = "beta";
@@ -42,5 +40,5 @@ TEST(MemoryStoreTest, GetUpdateDelete)
     EXPECT_FALSE(store.get(created.id).has_value());
 }
 
-}  // namespace
-}  // namespace web_server
+} // namespace
+} // namespace web_server

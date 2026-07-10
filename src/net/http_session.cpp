@@ -28,8 +28,7 @@ struct ParsedCrudTarget {
     std::int64_t id{};
 };
 
-[[nodiscard]] ParsedCrudTarget parse_crud_target(std::string_view target)
-{
+[[nodiscard]] ParsedCrudTarget parse_crud_target(std::string_view target) {
     ParsedCrudTarget result;
 
     if (!target.starts_with(crud_items_path)) {
@@ -52,8 +51,7 @@ struct ParsedCrudTarget {
     }
 
     std::int64_t id{};
-    auto const [ptr, ec] =
-        std::from_chars(id_part.data(), id_part.data() + id_part.size(), id);
+    auto const [ptr, ec] = std::from_chars(id_part.data(), id_part.data() + id_part.size(), id);
     if (ec != std::errc{} || ptr != id_part.data() + id_part.size()) {
         return {};
     }
@@ -63,11 +61,8 @@ struct ParsedCrudTarget {
     return result;
 }
 
-boost::asio::awaitable<http::message_generator> dispatch_crud_request(
-    RequestContext& ctx,
-    SharedState& state,
-    ParsedCrudTarget const& parsed)
-{
+boost::asio::awaitable<http::message_generator>
+dispatch_crud_request(RequestContext &ctx, SharedState &state, ParsedCrudTarget const &parsed) {
     auto const method = ctx.method();
 
     if (!parsed.has_id) {
@@ -93,10 +88,8 @@ boost::asio::awaitable<http::message_generator> dispatch_crud_request(
     co_return ctx.response().method_not_allowed();
 }
 
-boost::asio::awaitable<http::message_generator> handle_http_request(
-    http::request<http::string_body>&& request,
-    SharedState& state)
-{
+boost::asio::awaitable<http::message_generator>
+handle_http_request(http::request<http::string_body> &&request, SharedState &state) {
     RequestContext ctx{std::move(request)};
 
     try {
@@ -105,26 +98,23 @@ boost::asio::awaitable<http::message_generator> handle_http_request(
             co_return ctx.response().not_found_text();
         }
         co_return co_await dispatch_crud_request(ctx, state, parsed);
-    } catch (std::exception const& err) {
+    } catch (std::exception const &err) {
         co_return ctx.response().internal_server_error(err.what());
     }
 }
 
-}  // namespace
+} // namespace
 
-boost::asio::awaitable<void> run_http_session(
-    boost::asio::ip::tcp::socket&& socket,
-    boost::asio::ssl::context& ssl_ctx,
-    std::shared_ptr<SharedState> state)
-{
+boost::asio::awaitable<void> run_http_session(boost::asio::ip::tcp::socket &&socket,
+                                              boost::asio::ssl::context &ssl_ctx,
+                                              std::shared_ptr<SharedState> state) {
     boost::system::error_code ec;
     beast::ssl_stream<beast::tcp_stream> stream{std::move(socket), ssl_ctx};
     beast::flat_buffer buffer;
 
     beast::get_lowest_layer(stream).expires_after(io_timeout);
-    co_await stream.async_handshake(
-        boost::asio::ssl::stream_base::server,
-        boost::asio::redirect_error(ec));
+    co_await stream.async_handshake(boost::asio::ssl::stream_base::server,
+                                    boost::asio::redirect_error(ec));
     if (ec) {
         log_error(ec, "handshake");
         co_return;
@@ -139,8 +129,7 @@ boost::asio::awaitable<void> run_http_session(
 
         if (ec == http::error::end_of_stream) {
             beast::get_lowest_layer(stream).socket().shutdown(
-                boost::asio::ip::tcp::socket::shutdown_send,
-                ec);
+                boost::asio::ip::tcp::socket::shutdown_send, ec);
             co_return;
         }
         if (ec) {
@@ -148,8 +137,7 @@ boost::asio::awaitable<void> run_http_session(
             co_return;
         }
 
-        http::message_generator message =
-            co_await handle_http_request(parser.release(), *state);
+        http::message_generator message = co_await handle_http_request(parser.release(), *state);
         bool const keep_alive = message.keep_alive();
 
         co_await beast::async_write(stream, std::move(message), boost::asio::redirect_error(ec));
@@ -160,11 +148,10 @@ boost::asio::awaitable<void> run_http_session(
 
         if (!keep_alive) {
             beast::get_lowest_layer(stream).socket().shutdown(
-                boost::asio::ip::tcp::socket::shutdown_send,
-                ec);
+                boost::asio::ip::tcp::socket::shutdown_send, ec);
             co_return;
         }
     }
 }
 
-}  // namespace web_server
+} // namespace web_server

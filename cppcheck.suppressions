@@ -1,0 +1,7 @@
+# Boost/Conan headers trigger benign missing-include noise.
+missingIncludeSystem
+missingInclude
+unusedFunction:src/main.cpp
+syntaxError:test/test_memory_store.cpp
+constParameterReference:src/crud/items.cpp
+useStlAlgorithm:src/crud/items.cpp

@@ -4,7 +4,6 @@
 
 namespace web_server {
 
-void load_server_certificate(boost::asio::ssl::context& ctx);
+void load_server_certificate(boost::asio::ssl::context &ctx);
 
-}  // namespace web_server
-
+} // namespace web_server

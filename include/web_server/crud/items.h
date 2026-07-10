@@ -11,18 +11,18 @@
 namespace web_server {
 
 [[nodiscard]] boost::asio::awaitable<boost::beast::http::message_generator>
-handle_list_items(RequestContext& ctx, SharedState& state);
+handle_list_items(RequestContext &ctx, SharedState &state);
 
 [[nodiscard]] boost::asio::awaitable<boost::beast::http::message_generator>
-handle_create_item(RequestContext& ctx, SharedState& state);
+handle_create_item(RequestContext &ctx, SharedState &state);
 
 [[nodiscard]] boost::asio::awaitable<boost::beast::http::message_generator>
-handle_get_item(RequestContext& ctx, SharedState& state, std::int64_t id);
+handle_get_item(RequestContext &ctx, SharedState &state, std::int64_t id);
 
 [[nodiscard]] boost::asio::awaitable<boost::beast::http::message_generator>
-handle_update_item(RequestContext& ctx, SharedState& state, std::int64_t id);
+handle_update_item(RequestContext &ctx, SharedState &state, std::int64_t id);
 
 [[nodiscard]] boost::asio::awaitable<boost::beast::http::message_generator>
-handle_delete_item(RequestContext& ctx, SharedState& state, std::int64_t id);
+handle_delete_item(RequestContext &ctx, SharedState &state, std::int64_t id);
 
-}  // namespace web_server
+} // namespace web_server

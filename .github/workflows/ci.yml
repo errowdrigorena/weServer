@@ -1,0 +1,108 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  WESERVER_BUILD_DIR: ${{ github.workspace }}/build/Debug
+  WESERVER_BUILD_TYPE: Debug
+  WESERVER_CPP_STD: "20"
+
+jobs:
+  format:
+    name: clang-format
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install clang-format
+        run: sudo apt-get update && sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: ./scripts/ci_format.sh
+
+  static-analysis:
+    name: static analysis
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install toolchain and analyzers
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            pkg-config \
+            libssl-dev \
+            clang-tidy \
+            cppcheck \
+            python3 \
+            python3-pip
+
+      - name: Install Conan
+        run: python -m pip install --upgrade pip "conan>=2"
+
+      - name: Detect Conan profile
+        run: conan profile detect --force
+
+      - name: Configure build (compile_commands.json)
+        run: ./scripts/ci_build.sh
+
+      - name: cppcheck
+        run: ./scripts/ci_cppcheck.sh
+
+      - name: clang-tidy (Core Guidelines)
+        run: ./scripts/ci_clang_tidy.sh
+
+  build-test-smoke:
+    name: build, unit tests and smoke
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install toolchain
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            ninja-build \
+            pkg-config \
+            libssl-dev \
+            openssl \
+            python3 \
+            python3-pip
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.x"
+
+      - name: Install Conan and ruff
+        run: python -m pip install --upgrade pip "conan>=2" ruff
+
+      - name: Detect Conan profile
+        run: conan profile detect --force
+
+      - name: Build
+        run: ./scripts/ci_build.sh
+
+      - name: Unit tests
+        run: ./scripts/ci_test_unit.sh
+
+      - name: Python lint
+        run: ./scripts/lint_python.sh
+
+      - name: HTTPS CRUD smoke test
+        run: ./scripts/ci_integration.sh

@@ -13,15 +13,14 @@
 //
 //------------------------------------------------------------------------------
 
-#include "ServerCertificate.hpp"
-
+#include <boost/asio/dispatch.hpp>
+#include <boost/asio/strand.hpp>
 #include <boost/beast/core.hpp>
 #include <boost/beast/http.hpp>
 #include <boost/beast/ssl.hpp>
 #include <boost/beast/version.hpp>
-#include <boost/asio/dispatch.hpp>
-#include <boost/asio/strand.hpp>
 #include <boost/config.hpp>
+
 #include <Server.h>
 #include <algorithm>
 #include <cstdlib>
@@ -32,30 +31,24 @@
 #include <thread>
 #include <vector>
 
+#include "ServerCertificate.hpp"
+
 using web_server::run_server;
 
-namespace beast = boost::beast;         // from <boost/beast.hpp>
-namespace http = beast::http;           // from <boost/beast/http.hpp>
-namespace net = boost::asio;            // from <boost/asio.hpp>
-namespace ssl = boost::asio::ssl;       // from <boost/asio/ssl.hpp>
-using tcp = boost::asio::ip::tcp;       // from <boost/asio/ip/tcp.hpp>
-
-
-
+namespace beast = boost::beast;   // from <boost/beast.hpp>
+namespace http = beast::http;     // from <boost/beast/http.hpp>
+namespace net = boost::asio;      // from <boost/asio.hpp>
+namespace ssl = boost::asio::ssl; // from <boost/asio/ssl.hpp>
+using tcp = boost::asio::ip::tcp; // from <boost/asio/ip/tcp.hpp>
 
 //------------------------------------------------------------------------------
 
-
+//------------------------------------------------------------------------------
 
 //------------------------------------------------------------------------------
 
-
-//------------------------------------------------------------------------------
-
-int main(int argc, char* argv[])
-{
-	run_server();
-
+int main(int argc, char *argv[]) {
+    run_server();
 
     return EXIT_SUCCESS;
 }
